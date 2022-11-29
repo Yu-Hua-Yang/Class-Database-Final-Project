@@ -20,11 +20,11 @@ public class App
      */
     public static void main( String[] args ) throws SQLException, ClassNotFoundException{   
 
-        Connection conn = getConnection();
-    
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
         System.out.println("║               WELCOME TO THE DATABASE PROGRAM               ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+
+        Connection conn = getConnection();
 
         runProgram(conn);
     }
@@ -184,23 +184,39 @@ public class App
     public static Connection getConnection() throws SQLException {
         Scanner scan = new Scanner(System.in);
         String url = "jdbc:oracle:thin:@198.168.52.211:1521/pdbora19c.dawsoncollege.qc.ca";
-
+        boolean isEmpty = false;
+        String user = "";
+        String pass = "";
+    
         //gets the user to input into getConnection
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
         System.out.println("║                        ENTER USERNAME                       ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
-        String user = scan.nextLine();
+        user = scan.nextLine();
         System.out.println("");
         
-        //gets the pass to input into getConnection
-        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-        System.out.println("║                        ENTER PASSWORD                       ║");
-        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+        while(!isEmpty){
+            //gets the pass to input into getConnection
+            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+            System.out.println("║                        ENTER PASSWORD                       ║");
+            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
-        String pass = scan.nextLine();
-        System.out.println("");
+            String password= new String(System.console().readPassword());
+            System.out.println("");
 
+            if(password == null || password.trim().isEmpty()){
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+                System.out.println("║               INPUT IS INVALID PLEASE RE-ENTER              ║");
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+                continue;
+            }
+            else{
+                pass = password;
+                isEmpty = true;
+                break;
+            }
+        }
         //runs getConnection with the inputed variables
         Connection conn = DriverManager.getConnection(url, user, pass);
         return conn;
@@ -538,6 +554,36 @@ public class App
         }
     }
 
+    private static void whichTerm(String termID, Connection conn){
+        String termTitle = "";
+        
+        if(termID.equals("1") || termID.equals("3") || termID.equals("5")){
+            termTitle = "FALL";
+            Term addNewTerm = new Term(Integer.parseInt(termID), termTitle);
+            addNewTerm.addTerm(conn);
+        }
+        else if(termID.equals("2") || termID.equals("4") || termID.equals("6")){
+            termTitle = "WINTER";
+            Term addNewTerm = new Term(Integer.parseInt(termID), termTitle);
+            addNewTerm.addTerm(conn);
+        }
+    }
+
+    private static void whichType(String typeID, Connection conn){
+        String typeTitle = "";
+
+        if(typeID.equals("CON")){
+            typeTitle = "CONCENTRATION";
+            ClassType addNewClassType = new ClassType(typeID, typeTitle);
+            addNewClassType.addClassType(conn);
+        }
+        else if(typeID.equals("GEN")){
+            typeTitle = "GENERAL";
+            ClassType addNewClassType = new ClassType(typeID, typeTitle);
+            addNewClassType.addClassType(conn);
+        }
+    }
+
     /**
      * updateInput takes as input all the information of a object provided by a list
      * to then go through everything user what they would like to change and thus you 
@@ -580,12 +626,12 @@ public class App
         System.out.println("║              WOULD YOU LIKE TO UPDATE DESCRIPTION           ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
         // INPUTTING DESCRIPTION
         while(!isDescription){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
 
             input = scan.nextLine();
             System.out.println("");
@@ -625,13 +671,13 @@ public class App
         System.out.println("║               WOULD YOU LIKE TO UPDATE TITLE                ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
         // INPUTING TITLE
         while(!isTitle){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
-
+             
             input = scan.nextLine();
             System.out.println("");
 
@@ -671,12 +717,13 @@ public class App
         System.out.println("║               WOULD YOU LIKE TO UPDATE HOURS                ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
+
         // INPUTING HOURS
         while(!isHours){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
 
             input = scan.nextLine();
             System.out.println("");
@@ -716,13 +763,14 @@ public class App
         System.out.println("║            WOULD YOU LIKE TO UPDATE PONDERATION             ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
+
         // INPUTING PONDERATION
         while(!isPonderation){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
-
+        
             input = scan.nextLine();
             System.out.println("");
 
@@ -761,12 +809,13 @@ public class App
         System.out.println("║              WOULD YOU LIKE TO UPDATE TERM ID               ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
+
         // INPUTTING TERM ID
         while(!isTermId){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
 
             input = scan.nextLine();
             System.out.println("");
@@ -784,6 +833,7 @@ public class App
                 
                 //checks input and regex
                 term_id = validateInput(regex);
+                whichTerm(term_id, conn);
                 isTermId = true;
                 break;
             }
@@ -806,25 +856,26 @@ public class App
         System.out.println("║              WOULD YOU LIKE TO UPDATE CREDITS               ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
-        // INPUTTING TERM ID
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
+
+        // INPUTTING CREDITS
         while(!isCredits){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
 
             input = scan.nextLine();
             System.out.println("");
 
             if(input.equals("1")){
                 //running data validation for input
-                regex = "^[0-9]{1,2}[.]?[0-9]{0,2}$";
+                regex = "^[0-9]{1-2}[.]?[0-9]{1}$";
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
                 System.out.println("║           ENTER THE COURSE CREDITS FOR THE COURSE           ║");
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
         
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-                System.out.println("║         INPUT MUST BE 1 OR 2 DIGITS . 0 OR 2 DIGITS         ║");
+                System.out.println("║         INPUT MUST BE 1 OR 2 DIGITS . 0 OR 1 DIGITS         ║");
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
                 
                 //checks input and regex
@@ -851,29 +902,52 @@ public class App
         System.out.println("║            WOULD YOU LIKE TO UPDATE COURSE TYPE             ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
-        // INPUTTING TERM ID
-        while(!isCourseType){
-            //asking to update or not
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-            System.out.println("║                       (1)YES OR (2)NO                       ║");
-            System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
+        //asking to update or not
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+        System.out.println("║                       (1)YES OR (2)NO                       ║");
+        System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n"); 
 
+        // INPUTTING COURSE TYPE
+        while(!isCourseType){
+            
             input = scan.nextLine();
             System.out.println("");
 
             if(input.equals("1")){
                 //running data validation for input
-                regex = "^[A-Z]{4}";
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
                 System.out.println("║             ENTER THE COURSE TYPE FOR THE COURSE            ║");
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
         
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-                System.out.println("║                   INPUT MUST BE 4 LETTERS                   ║");
+                System.out.println("║                   INPUT MUST BE CON OR GEN                  ║");
                 System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
                 
+                boolean reInput = false;
                 //checks input and regex
-                course_type = validateInput(regex);
+                while(!reInput){
+                input = scan.nextLine();
+                System.out.println("");
+
+                if(input.equals("CON") || input.equals("GEN")){
+                    //checks if valid if it is then breaks out
+                    System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+                    System.out.println("║                      INPUT IS VALIDATED                     ║");
+                    System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+                    course_type = input;
+                    reInput = true;
+                    break;
+                }
+                else{
+                    //if not valid it will just loop again
+                    System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+                    System.out.println("║               INPUT IS INVALID PLEASE RE-ENTER              ║");
+                    System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+                    continue;
+                }
+                }
+
+                whichType(course_type, conn);
                 isCourseType = true;
                 break;
             }
@@ -911,6 +985,7 @@ public class App
      */
     public static void addInput(Connection conn){
         //data initialization
+        Scanner scan = new Scanner(System.in);
         String regex = "";
         String courseID = "";
         String courseDescription = "";
@@ -1001,67 +1076,63 @@ public class App
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
         //uses regex to data validate and stores the input
         termID = validateInput(regex);
+        whichTerm(termID, conn);
 
         // COURSE CREDITS
         //regex for data validation
-        regex = "^[0-9]{1,2}[.]?[0-9]{0,2}$";
+        regex = "^[0-9]{1,2}[.]?[0-9]{1}$";
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
         System.out.println("║           ENTER THE COURSE CREDITS FOR THE COURSE           ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-        System.out.println("║         INPUT MUST BE 1 OR 2 DIGITS . 0 OR 2 DIGITS         ║");
+        System.out.println("║         INPUT MUST BE 1 OR 2 DIGITS . 0 OR 1 DIGITS         ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
         //uses regex to data validate and stores the input
         credits = validateInput(regex);
 
         // COURSE TYPE
         //regex for data validation
-        regex = "^[A-Z]{4}";
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
         System.out.println("║             ENTER THE COURSE TYPE FOR THE COURSE            ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
 
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-        System.out.println("║                   INPUT MUST BE 4 LETTERS                   ║");
+        System.out.println("║                   INPUT MUST BE CON OR GEN                  ║");
         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
-        //uses regex to data validate and stores the input
-        courseType = validateInput(regex);
 
-         // COURSE TYPE TITLE
-         //regex for data validation
-         regex = "^[A-Z]{1,15}$";
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-         System.out.println("║          ENTER THE COURSE TYPE TITLE FOR THE COURSE         ║");
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+        boolean reInput = false;
+        String input = "";
 
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-         System.out.println("║            INPUT MUST BE BETWEEN 1 TO 15 LETTERS            ║");
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
-        //uses regex to data validate and stores the input
-         typeTitle = validateInput(regex);
+        //while loop for validation
+        while(!reInput){
+            input = scan.nextLine();
+            System.out.println("");
 
-         // TERM TITLE
-         //regex for data validation
-         regex = "^[A-Z]{1,6}$";
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-         System.out.println("║             ENTER THE TERM TITLE FOR THE COURSE             ║");
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
-
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
-         System.out.println("║            INPUT MUST BE BETWEEN 1 TO 6 LETTERS             ║");
-         System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
-        //uses regex to data validate and stores the input
-         termTitle = validateInput(regex);
+            if(input.equals("CON") || input.equals("GEN")){
+                //checks if valid if it is then breaks out
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+                System.out.println("║                      INPUT IS VALIDATED                     ║");
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+                courseType = input;
+                reInput = true;
+                break;
+            }
+            else{
+                //if not valid it will just loop again
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");
+                System.out.println("║               INPUT IS INVALID PLEASE RE-ENTER              ║");
+                System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║\n");
+                continue;
+            }
+        }
+        
+        whichType(courseType, conn);
 
          //creating objects for 3 different table with the information provided by the user
          Courses addCourseObj = new Courses(courseID, courseDescription, courseTitle, Integer.parseInt(courseHours), ponderation, Integer.parseInt(termID), Double.parseDouble(credits), courseType);
-         Term addTermObj = new Term(Integer.parseInt(termID), termTitle);
-         ClassType addClassTypeObj = new ClassType(courseType, typeTitle);
 
          //using the created object to call the respective add methods calling on their procedures
-         addTermObj.addTerm(conn);
-         addClassTypeObj.addClassType(conn);
          addCourseObj.addCourse(conn);
 
          System.out.println("║~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~║");

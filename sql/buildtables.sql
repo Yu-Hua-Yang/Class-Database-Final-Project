@@ -3,7 +3,7 @@
 
 --CREATING CLASSTYPE TABLE
 CREATE TABLE ClassType (
-    course_type VARCHAR2(4) PRIMARY KEY,
+    course_type VARCHAR2(3) PRIMARY KEY,
     type_title VARCHAR2(30) 
 );
 
@@ -29,17 +29,17 @@ CREATE TABLE Courses (
     course_hours NUMBER(3,0),
     ponderation VARCHAR2(5),
     term_id NUMBER(1,0) REFERENCES Term(term_id),
-    credits NUMBER(2,1),
-    course_type VARCHAR(4) REFERENCES CourseType(course_type)
-)
+    credits NUMBER(3,1),
+    course_type VARCHAR(3) REFERENCES ClassType(course_type)
+);
 
 --INSERTING SAMPLE DATA
 INSERT INTO classtype(course_type, type_title)
 VALUES('CONC', 'CONCENTRATION');
 INSERT INTO term(term_id, term_title)
-VALUES(1, 'Fall');
+VALUES(1, 'FALL');
 INSERT INTO courses(course_id, course_title, term_id, course_type, course_description, course_hours, ponderation, credits) 
-VALUES('420-110-DW', 'Programming I', 1, 'CONC', 
+VALUES('420-110-DW', 'Programming I', 1, 'CON', 
 'The course will introduce the student to the basic building blocks (sequential,
 selection and repetitive control structures) and modules (methods and classes)
 used to write a program. The student will use the Java programming language to
